@@ -2,17 +2,13 @@
 //  WinkMeFriendCell.m
 //  winkMe
 //
-//  Created by Admin on 25.02.14.
+//  Created by Admin on 27.02.14.
 //  Copyright (c) 2014 AKorenev. All rights reserved.
 //
 
 #import "WinkMeFriendCell.h"
 
 @implementation WinkMeFriendCell
-
-- (IBAction)tapLikeButton:(id)sender {
-    NSLog(@"%@", _friendID);
-}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
