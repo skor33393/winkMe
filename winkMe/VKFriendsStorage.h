@@ -8,19 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol VKFriendsStorageDelegate <NSObject>
-
-- (void)VKFriendsStorageDidReceivefriendsList;
-
-@end
-
 @interface VKFriendsStorage : NSObject
 {
 @private
     NSArray *friends;
 }
-
-@property (nonatomic, weak) id <VKFriendsStorageDelegate> delegate;
 
 + (NSArray *)getFriends;
 

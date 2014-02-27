@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "VKSdk.h"
 
 @interface WinkMeFriendCell : UITableViewCell
-
+@property (weak, nonatomic) IBOutlet UIImageView *friendPhoto;
+@property (weak, nonatomic) IBOutlet UILabel *friendName;
+@property(strong, nonatomic) NSString *friendID;
 @end

@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WinkMeFriendCell.h"
 
-@interface WinkMeFriendsListViewController : UIViewController
-
+@interface WinkMeFriendsListViewController : UIViewController <UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *friendsTableView;
 @end
