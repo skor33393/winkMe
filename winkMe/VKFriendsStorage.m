@@ -8,21 +8,23 @@
 
 #import "VKFriendsStorage.h"
 #import "VKRequest.h"
+#import "VKFriendsStorageConnection.h"
 
 @implementation VKFriendsStorage
 
-static VKFriendsStorage *friendsStorage = nil;
-
 #pragma mark Initialization
 
-+ (void)initialize {
-	NSAssert([VKFriendsStorage class] == self, @"Subclassing is not welcome");
-	friendsStorage = [[super alloc] initUniqueInstance];
++ (VKFriendsStorage *)sharedStorage {
+    static VKFriendsStorage *sharedStorage = nil;
+    if (!sharedStorage) {
+        sharedStorage = [[VKFriendsStorage alloc] init];
+    }
+    
+    return sharedStorage;
 }
 
-- (instancetype)initUniqueInstance {
-	self = [super init];
-    
+- (void)fetchFriendsWithCompletion:(void (^)(NSArray *, NSError *))block {
+       
     NSString *requestString = [NSString stringWithFormat:@"https://api.vk.com/method/friends.get?"
                                "uid=%@&fields=first_name,last_name,photo", [VKSdk getVkID]];
     
@@ -31,43 +33,12 @@ static VKFriendsStorage *friendsStorage = nil;
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setHTTPMethod:@"GET"];
     
-    NSURLResponse *response = nil;
-    NSError *error = nil;
+    VKFriendsStorageConnection *connection = [[VKFriendsStorageConnection alloc] initWithReuest:request];
     
-    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    [connection setCompletionBlock:block];
     
-    NSError *jsonError = nil;
-    
-    id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
-    if (jsonObject != nil && error == nil) {
-        if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-            friends = [jsonObject objectForKey:@"response"];
-        }
-    }
-    
-    /*NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-     [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSError *error = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-        if (jsonObject != nil && error == nil) {
-            if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-                friends = [jsonObject objectForKey:@"response"];
-            }
-        }
-    }];*/
-    
-    return self;
+    [connection start];
 }
 
-+ (instancetype)instance {
-	if (!friendsStorage) {
-		[NSException raise:@"VKSdk should be initialized" format:@"Use [VKSdk initialize:delegate] method"];
-	}
-	return friendsStorage;
-}
-
-+ (NSArray *)getFriends {
-    return friendsStorage->friends;
-}
 
 @end

@@ -14,6 +14,7 @@
     NSArray *friends;
 }
 
-+ (NSArray *)getFriends;
++ (VKFriendsStorage *)sharedStorage;
+- (void)fetchFriendsWithCompletion:(void (^)(NSArray *friends, NSError *error))block;
 
 @end

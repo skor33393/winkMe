@@ -8,6 +8,7 @@
 
 #import "WinkMeFriendsListViewController.h"
 #import "VKSdk.h"
+#import "VKFriendsStorage.h"
 
 @interface WinkMeFriendsListViewController ()
 
@@ -18,6 +19,7 @@
 @implementation WinkMeFriendsListViewController
 
 - (void)loadFriends {
+    //preparing Activity Views
     UIView *activityView = [[UIView alloc] initWithFrame:self.view.frame];
     [activityView setBackgroundColor:[UIColor lightGrayColor]];
     UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -28,25 +30,11 @@
     [self.view addSubview:activityView];
     [activityIndicator startAnimating];
     
-    NSString *requestString = [NSString stringWithFormat:@"https://api.vk.com/method/friends.get?"
-                               "uid=%@&fields=first_name,last_name,photo", [VKSdk getVkID]];
-    
-    NSURL *url = [NSURL URLWithString:requestString];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"GET"];
-    
-    NSOperationQueue *queue = [NSOperationQueue mainQueue];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        NSError *error = nil;
-        id jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
-        if (jsonObject != nil && error == nil) {
-            if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-                _friendsList = [jsonObject objectForKey:@"response"];
-                [activityView removeFromSuperview];
-                [self.friendsTableView reloadData];
-            }
-        }
+    //sending request
+    [[VKFriendsStorage sharedStorage] fetchFriendsWithCompletion:^(NSArray *friends, NSError *error) {
+        _friendsList = friends;
+        [activityView removeFromSuperview];
+        [_friendsTableView reloadData];
     }];
 }
 
@@ -66,19 +54,14 @@
     NSDictionary *user = [_friendsList objectAtIndex:indexPath.row];
     
     cell.friendID = [user objectForKey:@"uid"];
-    cell.friendName.text = [user objectForKey:@"first_name"];
+    
+    NSString *userName = [NSString stringWithFormat:@"%@ %@", [user objectForKey:@"first_name"], [user objectForKey:@"last_name"]];
+    cell.friendName.text = userName;
     
     return cell;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+#pragma mark UIViewController lifecycle
 
 - (void)viewDidLoad
 {
