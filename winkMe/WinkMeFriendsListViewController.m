@@ -9,9 +9,12 @@
 #import "WinkMeFriendsListViewController.h"
 #import "VKSdk.h"
 #import "VKFriendsStorage.h"
+#import "VKFriend.h"
+#import "VKPhotoDownloader.h"
 
 @interface WinkMeFriendsListViewController ()
 
+@property (nonatomic, strong) NSMutableDictionary *imageDownloadsInProgress;
 @property(nonatomic, strong) NSArray *friendsList;
 
 @end
@@ -51,14 +54,45 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     WinkMeFriendCell *cell = (WinkMeFriendCell *)[tableView dequeueReusableCellWithIdentifier:@"friend"];
     
-    NSDictionary *user = [_friendsList objectAtIndex:indexPath.row];
+    VKFriend *user = [_friendsList objectAtIndex:indexPath.row];
     
-    cell.friendID = [user objectForKey:@"uid"];
+    cell.friendID = user.vkID;
+    cell.friendName.text = user.fullName;
     
-    NSString *userName = [NSString stringWithFormat:@"%@ %@", [user objectForKey:@"first_name"], [user objectForKey:@"last_name"]];
-    cell.friendName.text = userName;
+    if (!user.photo) {
+        [self startPhotoDownload:user forIndexPath:indexPath];
+        cell.friendPhoto.image = [UIImage imageNamed:@"Placeholder.png"];
+    }
+    else {
+        cell.friendPhoto.image = user.photo;
+    }
     
     return cell;
+}
+
+#pragma mark Photo Downloading
+
+- (void)startPhotoDownload:(VKFriend *)user forIndexPath:(NSIndexPath *)indexPath {
+    VKPhotoDownloader *photoDownloader = [self.imageDownloadsInProgress objectForKey:indexPath];
+    if (photoDownloader == nil)
+    {
+        photoDownloader = [[VKPhotoDownloader alloc] init];
+        photoDownloader.user = user;
+        [photoDownloader setCompletionHandler:^{
+            
+            WinkMeFriendCell *cell = (WinkMeFriendCell *)[self.friendsTableView cellForRowAtIndexPath:indexPath];
+            
+            // Display the newly loaded image
+            cell.friendPhoto.image = user.photo;
+            
+            // Remove the IconDownloader from the in progress list.
+            // This will result in it being deallocated.
+            [self.imageDownloadsInProgress removeObjectForKey:indexPath];
+            
+        }];
+        [self.imageDownloadsInProgress setObject:photoDownloader forKey:indexPath];
+        [photoDownloader startDownload];
+    }
 }
 
 #pragma mark UIViewController lifecycle
@@ -68,6 +102,12 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //make tab bar not to cover last cell in table view
+    self.edgesForExtendedLayout = UIRectEdgeAll;
+    NSInteger sbh = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    self.friendsTableView.contentInset = UIEdgeInsetsMake(sbh, 0., CGRectGetHeight(self.tabBarController.tabBar.frame), 0);
+    
+    //assign sata source
     self.friendsTableView.dataSource = self;
     
     [self loadFriends];

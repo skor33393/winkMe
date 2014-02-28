@@ -13,4 +13,5 @@
 @property (weak, nonatomic) IBOutlet UIImageView *friendPhoto;
 @property (weak, nonatomic) IBOutlet UILabel *friendName;
 @property(strong, nonatomic) NSString *friendID;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *buttonActivity;
 @end

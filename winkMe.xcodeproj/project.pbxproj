@@ -12,6 +12,8 @@
 		84ECDA7118BF780B00FA91A7 /* WinkMeAPIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECDA7018BF780B00FA91A7 /* WinkMeAPIConnection.m */; };
 		84ECDA7518BF84AC00FA91A7 /* WinkMeAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECDA7418BF84AC00FA91A7 /* WinkMeAPI.m */; };
 		84ECDA7818BF86BB00FA91A7 /* VKFriendsStorageConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 84ECDA7718BF86BB00FA91A7 /* VKFriendsStorageConnection.m */; };
+		84EFEB0818C0A40C00E2BA7F /* VKFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EFEB0718C0A40C00E2BA7F /* VKFriend.m */; };
+		84EFEB0B18C0A86800E2BA7F /* VKPhotoDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 84EFEB0A18C0A86800E2BA7F /* VKPhotoDownloader.m */; };
 		84FD7DBE18BB66CD001B2DB7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FD7DBD18BB66CD001B2DB7 /* Foundation.framework */; };
 		84FD7DC018BB66CD001B2DB7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FD7DBF18BB66CD001B2DB7 /* CoreGraphics.framework */; };
 		84FD7DC218BB66CD001B2DB7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84FD7DC118BB66CD001B2DB7 /* UIKit.framework */; };
@@ -51,6 +53,10 @@
 		84ECDA7418BF84AC00FA91A7 /* WinkMeAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WinkMeAPI.m; sourceTree = "<group>"; };
 		84ECDA7618BF86BB00FA91A7 /* VKFriendsStorageConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKFriendsStorageConnection.h; sourceTree = "<group>"; };
 		84ECDA7718BF86BB00FA91A7 /* VKFriendsStorageConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKFriendsStorageConnection.m; sourceTree = "<group>"; };
+		84EFEB0618C0A40C00E2BA7F /* VKFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKFriend.h; sourceTree = "<group>"; };
+		84EFEB0718C0A40C00E2BA7F /* VKFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKFriend.m; sourceTree = "<group>"; };
+		84EFEB0918C0A86800E2BA7F /* VKPhotoDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VKPhotoDownloader.h; sourceTree = "<group>"; };
+		84EFEB0A18C0A86800E2BA7F /* VKPhotoDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VKPhotoDownloader.m; sourceTree = "<group>"; };
 		84FD7DBA18BB66CD001B2DB7 /* winkMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = winkMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84FD7DBD18BB66CD001B2DB7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		84FD7DBF18BB66CD001B2DB7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -197,6 +203,10 @@
 				84FD7E0018BCCF7E001B2DB7 /* VKFriendsStorage.m */,
 				84ECDA7618BF86BB00FA91A7 /* VKFriendsStorageConnection.h */,
 				84ECDA7718BF86BB00FA91A7 /* VKFriendsStorageConnection.m */,
+				84EFEB0918C0A86800E2BA7F /* VKPhotoDownloader.h */,
+				84EFEB0A18C0A86800E2BA7F /* VKPhotoDownloader.m */,
+				84EFEB0618C0A40C00E2BA7F /* VKFriend.h */,
+				84EFEB0718C0A40C00E2BA7F /* VKFriend.m */,
 				84FD7DF218BB6CFF001B2DB7 /* VKSdk.h */,
 				84FD7DF318BB6CFF001B2DB7 /* VKSdk.m */,
 			);
@@ -301,6 +311,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84EFEB0B18C0A86800E2BA7F /* VKPhotoDownloader.m in Sources */,
 				84ECDA7818BF86BB00FA91A7 /* VKFriendsStorageConnection.m in Sources */,
 				8439235A18BE8ED8001D271C /* WinkMeFriendsListViewController.m in Sources */,
 				84FD7DCA18BB66CD001B2DB7 /* main.m in Sources */,
@@ -311,6 +322,7 @@
 				84ECDA7118BF780B00FA91A7 /* WinkMeAPIConnection.m in Sources */,
 				84FD7DCE18BB66CD001B2DB7 /* WinkMeAppDelegate.m in Sources */,
 				84FD7DD418BB66CD001B2DB7 /* WinkMeViewController.m in Sources */,
+				84EFEB0818C0A40C00E2BA7F /* VKFriend.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

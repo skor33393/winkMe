@@ -10,9 +10,10 @@
 
 @interface VKFriendsStorage : NSObject
 {
-@private
     NSArray *friends;
 }
+
+@property BOOL cached;
 
 + (VKFriendsStorage *)sharedStorage;
 - (void)fetchFriendsWithCompletion:(void (^)(NSArray *friends, NSError *error))block;

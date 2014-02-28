@@ -7,6 +7,7 @@
 //
 
 #import "VKFriendsStorageConnection.h"
+#import "VKFriend.h"
 
 static NSMutableArray *sharedConnectionList = nil;
 
@@ -43,12 +44,17 @@ static NSMutableArray *sharedConnectionList = nil;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     if ([self completionBlock]) {
-        NSArray *friends = [[NSArray alloc] init];
+        NSArray *friendsTMP = [[NSArray alloc] init];
+        NSMutableArray *friends = [[NSMutableArray alloc] init];
         NSError *parsingError = nil;
         id jsonObject = [NSJSONSerialization JSONObjectWithData:container options:NSJSONReadingAllowFragments error:&parsingError];
         if (jsonObject != nil && parsingError == nil) {
             if ([jsonObject isKindOfClass:[NSDictionary class]]) {
-                friends = [jsonObject objectForKey:@"response"];
+                friendsTMP = [jsonObject objectForKey:@"response"];
+                for (NSDictionary *dict in friendsTMP) {
+                    VKFriend *friendRecord = [[VKFriend alloc] initWithDictionary:dict];
+                    [friends addObject:friendRecord];
+                }
             }
         }
         [self completionBlock](friends, nil);
